@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#4ab6d9</color>
+    <color name="colorPrimaryDark">#2485a6</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="divider">#fffefe</color>
+
+
+    <color name="white">#ffffff</color>
+    <color name="orange">#ffd27f</color>
+    <color name="dark_orange">#ffb732</color>
+    <color name="text_color">#272928</color>
+    <!--<color name="text_color">#292f33</color>-->
+    <color name="black">#000000</color>
+    <color name="light_text">#c3c4c4</color>
+    <color name="medium_text">#7e7e7e</color>
+
+    <!--<color name="medium_text">#898989</color>-->
+    <color name="light_grey">#ECEFF1</color>
+    <color name="transparent">#80000000</color>
+    <color name="green">#3f7600</color>
+
+    <color name="light_white">#d5d5d5</color>
+    <color name="dull_white">#F5F5F5</color>
+
+    <color name="bottom_bar_text_color">#6b6d7b</color>
+    <color name="red">#B71C1C</color>
+
+    <color name="cyan_light">#eaf6fb</color>
+    <color name="cyan_medium">#96d4e9</color>
+    <color name="dark_white">#efeeec</color>
+    <color name="yellow">#FFC107</color>
+    <color name="light_blue">#d7effe</color>
+    <color name="dark_blue">#28a7fc</color>
+    <color name="selected_tab_color">#0096ff</color>
+    <color name="unselected_tab">#acacac</color>
+    <color name="dark_text">#4d4d4d</color>
+
+</resources>

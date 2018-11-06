@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sliding_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimaryDark"
+    android:gravity="bottom"
+    tools:context="com.example.afa.geobuddy.AddReminder">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/addremtoolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize">
+
+
+            <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:orientation="horizontal">
+
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Add Reminder"
+                    android:textColor="@color/white"
+                    android:textSize="22sp" />
+
+
+
+
+            <Button
+                android:id="@+id/btn_save"
+                android:layout_width="40dp"
+                android:layout_height="42dp"
+                style="?attr/borderlessButtonStyle"
+                android:background="@drawable/ic_done_black_36dp"
+                android:backgroundTint="@color/white"
+                android:layout_marginLeft="160dp"/>
+            </LinearLayout>
+
+
+
+        </android.support.v7.widget.Toolbar>
+
+
+
+        <!-- Map -->
+        <FrameLayout
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_weight="6"
+            android:background="#000000"></FrameLayout>
+
+        <!-- Other Widgets -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:background="@drawable/edittext_border">
+
+            <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
+            <LinearLayout
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:layout_width="0px"
+                android:layout_height="0px"/>
+
+            <!-- Title Field -->
+            <!-- :nextFocusUp and :nextFocusLeft have been set to the id of this component
+            to prevent the dummy from receiving focus again -->
+            <EditText
+                android:id="@+id/txt_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:hint="Title"
+                android:inputType="textCapSentences"
+                android:nextFocusLeft="@id/txt_title"
+                android:nextFocusUp="@id/txt_title"
+                android:textSize="15sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <!-- Location Field-->
+            <com.example.afa.geobuddy.DelayAutoCompleteTextView
+                android:id="@+id/txt_location"
+                android:layout_width="285dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:dropDownWidth="fill_parent"
+                android:hint="Location"
+                android:imeOptions="flagNoExtractUi|actionSearch"
+                android:inputType="textCapSentences"
+                android:textSize="15sp" />
+
+                <Button
+                    android:id="@+id/cleartext"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/cleartext"
+                    style="?attr/borderlessButtonStyle"/>
+
+
+            </LinearLayout>
+
+
+
+            <!-- Radius Field -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical">
+
+                <!-- displays radius -->
+                <TextView
+                    android:id="@+id/txt_radius"
+                    android:layout_width="wrap_content"
+                    android:layout_height="15dp"
+                    android:text="50 Mtr"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:textColor="@color/colorPrimary"
+                    />
+
+
+                <com.example.afa.geobuddy.Slider
+                    android:layout_marginTop="8dp"
+                    android:id="@+id/radius_seekbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:max="13"
+                    android:progress="5"
+                    android:progressDrawable="@drawable/seekbar_progress"
+                    android:progressTint="@color/colorPrimaryDark"
+                    android:progressBackgroundTint="#D4E2F0"
+                    android:thumbTint="#000000"/>
+            </LinearLayout>
+
+            <!-- Notification-Type Field -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:id="@+id/txt_arrival"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    android:background="@drawable/textview_selector_bg"
+                    android:gravity="center_horizontal|center"
+                    android:padding="8dp"
+                    android:text="When I Arrive"
+                    android:textColor="@drawable/textview_selector"/>
+                <TextView
+                    android:id="@+id/txt_departure"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/textview_selector_bg"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="When I Leave"
+                    android:textColor="@drawable/textview_selector"
+
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
+
+            <!-- Note Field -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/txt_note"
+                    android:layout_width="match_parent"
+                    android:minHeight="50dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edittext_border"
+                    android:gravity="top"
+                    android:hint="Note"
+                    android:inputType="textMultiLine"
+                    android:maxLines="8"
+                    android:minLines="1"
+                    android:overScrollMode="ifContentScrolls"
+                    android:padding="4dp"
+                    android:scrollbarStyle="insideInset"
+                    android:scrollbars="vertical"
+                    android:singleLine="false"
+                    android:textSize="15dp"
+                    />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_reminder"
+        android:icon="@drawable/locationreminder"
+        android:title="Reminder"/>
+
+    <item
+        android:id="@+id/navigation_search"
+        android:icon="@drawable/locsearch"
+        android:title="Search" />
+
+    <item
+        android:id="@+id/navigation_getlocation"
+        android:icon="@drawable/getlocation"
+        android:title="Get Location" />
+    <item
+        android:id="@+id/navigation_notes"
+        android:icon="@drawable/notes"
+        android:title="Notes" />
+
+</menu>

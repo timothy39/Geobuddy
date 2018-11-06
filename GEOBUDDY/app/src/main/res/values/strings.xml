@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">GEOBUDDY</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="btnSearch">SEARCH</string>
+    <string name="txtPostcode">Enter Address or Postcode</string>
+    <string name="txt_title">Enter Title</string>
+    <string name="txt_location">Enter Location</string>
+    <string name="txt_note">Enter Note</string>
+    <string name="rem_radius">Enter Radius</string>
+    <string name="btn_cancel">CANCEL</string>
+    <string name="btn_locate">locateimg</string>
+    <string name="enter_notification_radius">Enter Notification Radius:</string>
+    <string name="enter_notification_type">Enter Notification Type:</string>
+    <string name="btn_save">SAVE</string>
+    <string name="enter_note">Enter Note</string>
+
+    <string-array name="txtGroup">
+        <item>Arrival</item>
+        <item>Departure</item>
+    </string-array>
+
+
+</resources>

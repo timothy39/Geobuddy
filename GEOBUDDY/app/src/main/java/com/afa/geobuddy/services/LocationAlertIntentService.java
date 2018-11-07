@@ -1,4 +1,4 @@
-package com.example.afa.geobuddy;
+package com.afa.geobuddy.services;
 
 
 import android.app.IntentService;
@@ -9,17 +9,15 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.example.afa.geobuddy.R;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofenceStatusCodes;
-import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingEvent;
-import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,14 +30,13 @@ import java.util.Locale;
 public class LocationAlertIntentService extends IntentService {
 
 
-
     private static final String TAG = LocationAlertIntentService.class.getSimpleName();
     private static final int JOB_ID = 573;
     private static final String CHANNEL_ID = "channel_01";
 
 
     public LocationAlertIntentService() {
-      super("LocationAlert");
+        super("LocationAlert");
     }
 
     public LocationAlertIntentService(String name) {
@@ -55,7 +52,7 @@ public class LocationAlertIntentService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
 
-        if(geofencingEvent.hasError()){
+        if (geofencingEvent.hasError()) {
             String errorMsg = geofencingEvent.toString() + " " + geofencingEvent.getErrorCode();
             Log.e(TAG, errorMsg);
             return;
@@ -65,9 +62,9 @@ public class LocationAlertIntentService extends IntentService {
         int geoTransition = geofencingEvent.getGeofenceTransition();
 
         // Test that the reported transition was of interest
-        if(geoTransition == Geofence.GEOFENCE_TRANSITION_ENTER ||
+        if (geoTransition == Geofence.GEOFENCE_TRANSITION_ENTER ||
                 geoTransition == Geofence.GEOFENCE_TRANSITION_DWELL ||
-                geoTransition == Geofence.GEOFENCE_TRANSITION_EXIT){
+                geoTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
 
             // Get the geofences that were triggered. A single event can trigger multiple geofences
             List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
@@ -80,16 +77,15 @@ public class LocationAlertIntentService extends IntentService {
 
 
             // Send notification and log the transition details
-            notifyLocationAlert(transitionType, transitionDetails,alarmSound);
+            notifyLocationAlert(transitionType, transitionDetails, alarmSound);
             Log.i(TAG, transitionDetails);
-        }
-        else{
+        } else {
             Log.e(TAG, "INVALID TRANSITION");
         }
     }
 
 
-    private String getGeofenceTransitionDetails(int geofenceTransition,List<Geofence> triggeringGeofences) {
+    private String getGeofenceTransitionDetails(int geofenceTransition, List<Geofence> triggeringGeofences) {
         /*
          * Gets transition details and returns them as a formatted string.
          *
@@ -105,7 +101,7 @@ public class LocationAlertIntentService extends IntentService {
         for (Geofence geofence : triggeringGeofences) {
             triggeringGeofencesIdsList.add(geofence.getRequestId());
         }
-        String triggeringGeofencesIdsString = TextUtils.join(", ",  triggeringGeofencesIdsList);
+        String triggeringGeofencesIdsString = TextUtils.join(", ", triggeringGeofencesIdsList);
 
         return geofenceTransitionString + ": " + triggeringGeofencesIdsString;
     }
@@ -178,7 +174,7 @@ public class LocationAlertIntentService extends IntentService {
         }
     }
 
-    private void notifyLocationAlert(String locTransitionType, String locationDetails,Uri alarmsound) {
+    private void notifyLocationAlert(String locTransitionType, String locationDetails, Uri alarmsound) {
 
         String CHANNEL_ID = "GEOBUDDY";
         NotificationCompat.Builder builder =
@@ -187,8 +183,6 @@ public class LocationAlertIntentService extends IntentService {
                         .setContentTitle(locTransitionType)
                         .setContentText(locationDetails)
                         .setSound(alarmsound);
-
-
 
 
         builder.setAutoCancel(true);

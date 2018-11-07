@@ -1,10 +1,10 @@
-package com.example.afa.geobuddy;
+package com.afa.geobuddy.ui;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Window;
-import android.view.WindowManager;
+import android.support.v7.app.AppCompatActivity;
+
+import com.example.afa.geobuddy.R;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -14,9 +14,8 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //removing title bar
         setContentView(R.layout.activity_splash);
-        TimerTask splashtask = new TimerTask() {
+        TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 finish();
@@ -24,6 +23,6 @@ public class SplashActivity extends AppCompatActivity {
             }
         };
         Timer opening = new Timer();
-        opening.schedule(splashtask,3000);
+        opening.schedule(task, 3000);
     }
 }

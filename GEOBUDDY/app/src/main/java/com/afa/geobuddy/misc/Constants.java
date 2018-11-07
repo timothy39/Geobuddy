@@ -1,4 +1,4 @@
-package com.example.afa.geobuddy;
+package com.afa.geobuddy.misc;
 
 /**
  * Created by nders on 20/2/2018.

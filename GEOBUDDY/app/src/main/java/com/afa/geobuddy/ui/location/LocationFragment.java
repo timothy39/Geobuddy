@@ -1,7 +1,8 @@
-package com.example.afa.geobuddy;
+package com.afa.geobuddy.ui.location;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
@@ -16,11 +17,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.location.Address;
 
+import com.example.afa.geobuddy.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -30,8 +33,6 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationListener;
 
 import java.io.IOException;
 import java.util.List;
@@ -50,7 +51,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,
     private Marker mCurrentLocationMarker;
     private Location myLastLocation;
     private CameraPosition mCameraPosition;
-    private  LocationRequest mapLocationRequest;
+    private LocationRequest mapLocationRequest;
 
 
     // Keys for storing activity state
@@ -68,7 +69,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,
         super.onCreate(savedInstanceState);
         // TODO
         // Retrieve location and camera position from saved instance state.
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
             myLastLocation = savedInstanceState.getParcelable(KEY_LOCATION);
             mCameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
         }
@@ -93,12 +94,12 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,
         return v;
     }
 
-    private void getLocationPermission(){
+    private void getLocationPermission() {
         /*
-        * Request location permission, so that we can get the location of the
-        * device. The result of the permission request is handled by a callback,
-        * onRequestPermissionsResult.
-        */
+         * Request location permission, so that we can get the location of the
+         * device. The result of the permission request is handled by a callback,
+         * onRequestPermissionsResult.
+         */
         if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mLocationPermissionGranted = true;
         } else {
@@ -124,14 +125,13 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,
     }
 
 
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         /**
          * Saves the state of the map when the activity is paused.
          */
-        if (mMap != null){
+        if (mMap != null) {
             outState.putParcelable(KEY_LOCATION, myLastLocation);
             outState.putParcelable(KEY_CAMERA_POSITION, mMap.getCameraPosition());
         }
@@ -150,11 +150,11 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
                 .setInterval(10000)
                 .setFastestInterval(1000);
-        if(ContextCompat.checkSelfPermission(getActivity(),
+        if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED){
-            LocationServices.FusedLocationApi.requestLocationUpdates(mapGoogleApiClient, mapLocationRequest,  this);
-            Log.i(TAG,"Location Services Connected.");
+                == PackageManager.PERMISSION_GRANTED) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(mapGoogleApiClient, mapLocationRequest, this);
+            Log.i(TAG, "Location Services Connected.");
         }
 
 
@@ -183,10 +183,10 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,
 
 
         //moving map camera
-       mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-       mMap.animateCamera(CameraUpdateFactory.zoomOut());
-       mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng ));
-       mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap.animateCamera(CameraUpdateFactory.zoomOut());
+        mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
         //stopping location updates
         if (mapGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mapGoogleApiClient, this);
@@ -195,34 +195,32 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,
 
     }
 
-    private String mapAddress(LatLng latLng){
+    private String mapAddress(LatLng latLng) {
         //created geocoder object converting long and lat coordinates into address and vice versa
         Geocoder geocoder = new Geocoder(getActivity());
         String txtaddress = "";
         List<Address> addressList = null;
         Address address = null;
-        try{
+        try {
             //asks geocoder for address passed to method
             addressList = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-           //if address is available  convert to string and return
-            if(null != addressList && !addressList.isEmpty()){
+            //if address is available  convert to string and return
+            if (null != addressList && !addressList.isEmpty()) {
                 address = addressList.get(0);
 
 
-                for(int i =0; i < address.getMaxAddressLineIndex(); i++){
-                    txtaddress += (i == 0)?address.getAddressLine(i):("\n" + address.getAddressLine(i));
+                for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
+                    txtaddress += (i == 0) ? address.getAddressLine(i) : ("\n" + address.getAddressLine(i));
 
                 }
 
             }
 
-        }catch(IOException e){
+        } catch (IOException e) {
 
         }
         return txtaddress;
     }
-
-
 
 
     @Override
@@ -231,32 +229,32 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,
     }
 
 
-    private void updateLocationUI(){
+    private void updateLocationUI() {
         /*
-        * Updates the map's UI settings based on user's decision to grant Geobuddy, location permission
-        */
-        if(mMap == null)
+         * Updates the map's UI settings based on user's decision to grant Geobuddy, location permission
+         */
+        if (mMap == null)
             return;
 
-        try{
-            if(mLocationPermissionGranted){
+        try {
+            if (mLocationPermissionGranted) {
                 mMap.setMyLocationEnabled(true);
                 mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
                 // Move camera to last known location (if exists)
-                if (myLastLocation != null){
+                if (myLastLocation != null) {
                     LatLng latLng = new LatLng(myLastLocation.getLatitude(), myLastLocation.getLongitude());
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                     mMap.animateCamera(CameraUpdateFactory.zoomTo(DEFAULT_ZOOM));
                 }
 
-            }else {
+            } else {
                 mMap.setMyLocationEnabled(false);
                 mMap.getUiSettings().setMyLocationButtonEnabled(false);
                 myLastLocation = null;
                 getLocationPermission();
             }
-        }catch (SecurityException e){
+        } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage());
         }
     }
@@ -265,8 +263,8 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         /*
-        * Handles the result of the permission request
-        */
+         * Handles the result of the permission request
+         */
 
         Log.i("onRequestPermission", "requestCode: " + String.valueOf(requestCode));
 
@@ -286,16 +284,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,
     }
 
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+
 
     public LocationFragment() {
         // Required empty public constructor

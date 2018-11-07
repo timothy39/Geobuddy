@@ -1,4 +1,4 @@
-package com.example.afa.geobuddy;
+package com.afa.geobuddy.ui.reminder;
 
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -29,6 +29,11 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afa.geobuddy.services.LocationAlertIntentService;
+import com.afa.geobuddy.ui.reminder.views.DelayAutoCompleteTextView;
+import com.afa.geobuddy.models.Reminder;
+import com.afa.geobuddy.ui.reminder.views.Slider;
+import com.example.afa.geobuddy.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.Geofence;
@@ -170,8 +175,6 @@ public class AddReminderFragment extends Fragment implements OnMapReadyCallback,
         searchmapfragment.getMapAsync(this);
 
 
-
-
         //btn save
         btn_save = view.findViewById(R.id.btn_save);
         btn_save.setOnClickListener(new View.OnClickListener() {
@@ -289,8 +292,7 @@ public class AddReminderFragment extends Fragment implements OnMapReadyCallback,
             edit_note.setText(mTitle);
             edit_address.setText(mlocation);
             btn_save.setEnabled(true);
-        }
-        else{
+        } else {
             btn_save.setEnabled(false);
         }
 
@@ -303,7 +305,7 @@ public class AddReminderFragment extends Fragment implements OnMapReadyCallback,
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(count > 0 && !edit_location.getText().toString().isEmpty() && mGeoSearchResult != null)
+                if (count > 0 && !edit_location.getText().toString().isEmpty() && mGeoSearchResult != null)
                     btn_save.setEnabled(true);
                 else
                     btn_save.setEnabled(false);
@@ -339,7 +341,7 @@ public class AddReminderFragment extends Fragment implements OnMapReadyCallback,
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(count > 0 && !edit_title.getText().equals(""))
+                if (count > 0 && !edit_title.getText().equals(""))
                     btn_save.setEnabled(true);
                 else
                     btn_save.setEnabled(false);
@@ -416,16 +418,15 @@ public class AddReminderFragment extends Fragment implements OnMapReadyCallback,
     }
 
 
-
-
-    /** Add a new reminder  */
+    /**
+     * Add a new reminder
+     */
     private void save() {
 
         String title = edit_title.getText().toString();
         String locationString = edit_location.getText().toString();
         String note = edit_note.getText().toString();
         LatLng latLng = new LatLng(mGeoSearchResult.fullAddress().getLatitude(), mGeoSearchResult.fullAddress().getLongitude());
-
 
 
         Reminder newReminder = new Reminder(title, latLng, mRadius, mNotificationType, note);
@@ -437,8 +438,10 @@ public class AddReminderFragment extends Fragment implements OnMapReadyCallback,
 
     }
 
-    /** Annotates map with a circle */
-    private void drawCircle(){
+    /**
+     * Annotates map with a circle
+     */
+    private void drawCircle() {
 
         // clear previous circle
         if (mCircle != null)
@@ -455,8 +458,10 @@ public class AddReminderFragment extends Fragment implements OnMapReadyCallback,
                 mCircle.getCenter(), getZoomLevel(mCircle)));
     }
 
-    /** Annotates map with a marker */
-    private void placeMarker(){
+    /**
+     * Annotates map with a marker
+     */
+    private void placeMarker() {
 
         if (mLocationMarker != null) {
             mLocationMarker.remove();
@@ -473,7 +478,9 @@ public class AddReminderFragment extends Fragment implements OnMapReadyCallback,
         mLocationMarker = mMap.addMarker(markerOptions);
     }
 
-    /** Adjusts camera zoom based on the circle drawn */
+    /**
+     * Adjusts camera zoom based on the circle drawn
+     */
     public int getZoomLevel(Circle circle) {
         int zoomLevel = 11;
         if (circle != null) {
@@ -484,16 +491,17 @@ public class AddReminderFragment extends Fragment implements OnMapReadyCallback,
         return zoomLevel;
     }
 
-    /** Updates notification type when "Departure" or "Arrival" buttons are clicked */
-    private void setNotificationType(int notificationType){
-        if(notificationType == this.mNotificationType)
+    /**
+     * Updates notification type when "Departure" or "Arrival" buttons are clicked
+     */
+    private void setNotificationType(int notificationType) {
+        if (notificationType == this.mNotificationType)
             return;
 
-        if (notificationType == NOTIFICATION_ARRIVAL){
+        if (notificationType == NOTIFICATION_ARRIVAL) {
             txt_arrival.setSelected(true);
             txt_departure.setSelected(false);
-        }
-        else if (notificationType == NOTIFICATION_DEPARTURE){
+        } else if (notificationType == NOTIFICATION_DEPARTURE) {
             txt_arrival.setSelected(false);
             txt_departure.setSelected(true);
         }
@@ -501,21 +509,21 @@ public class AddReminderFragment extends Fragment implements OnMapReadyCallback,
     }
 
 
-    /** **************************************************************************************
-     *
+    /**
+     * *************************************************************************************
+     * <p>
      * GEOFENCING METHODS for adding or removing alerts
-     *
      ******************************************************************************************/
 
 
-    private void addLocationAlert(double lat, double lng){
+    private void addLocationAlert(double lat, double lng) {
 
         // Get Location Access permission (if needed)
         getLocationPermission();
 
-        String key = ""+lat+"-"+lng;
+        String key = "" + lat + "-" + lng;
         Geofence geofence = getGeofence(lat, lng, key, mRadius, mNotificationType);
-        try{
+        try {
             mGeofencingClient.addGeofences(
                     getGeofencingRequest(geofence, mNotificationType),
                     getGeofencePendingIntent())
@@ -527,7 +535,7 @@ public class AddReminderFragment extends Fragment implements OnMapReadyCallback,
                                         "Reminder added",
                                         Toast.LENGTH_SHORT).show();
 
-                            }else{
+                            } else {
                                 Toast.makeText(getActivity(),
                                         "Location alter could not be added",
                                         Toast.LENGTH_SHORT).show();
@@ -537,16 +545,16 @@ public class AddReminderFragment extends Fragment implements OnMapReadyCallback,
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     Log.e(TAG, "Failed to add geofence");
-                }});
-        }
-        catch (SecurityException e){
+                }
+            });
+        } catch (SecurityException e) {
             Log.e(TAG, e.toString());
         }
 
 
     }
 
-    private void removeLocationAlert(){
+    private void removeLocationAlert() {
 
         // Checks for location access permission
         getLocationPermission();
@@ -559,7 +567,7 @@ public class AddReminderFragment extends Fragment implements OnMapReadyCallback,
                             Toast.makeText(getContext(),
                                     "Location alters have been removed",
                                     Toast.LENGTH_SHORT).show();
-                        }else{
+                        } else {
                             Toast.makeText(getContext(),
                                     "Location alters could not be removed",
                                     Toast.LENGTH_SHORT).show();
@@ -597,13 +605,12 @@ public class AddReminderFragment extends Fragment implements OnMapReadyCallback,
         GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
 
 
-        if (notificationType == NOTIFICATION_ARRIVAL){
+        if (notificationType == NOTIFICATION_ARRIVAL) {
             // The INITIAL_TRIGGER_ENTER flag indicates that geofencing service should trigger a
             // GEOFENCE_TRANSITION_ENTER notification when the geofence is added and if the device
             // is already inside that geofence.
-            builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER ); // | GeofencingRequest.INITIAL_TRIGGER_DWELL
-        }
-        else if (notificationType == NOTIFICATION_DEPARTURE){
+            builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER); // | GeofencingRequest.INITIAL_TRIGGER_DWELL
+        } else if (notificationType == NOTIFICATION_DEPARTURE) {
             // The INITIAL_TRIGGER_EXIT flag indicates that geofencing service should trigger a
             // GEOFENCE_TRANSITION_EXIT notification when the geofence is added and if the device
             // is already outside that geofence.
@@ -663,13 +670,13 @@ public class AddReminderFragment extends Fragment implements OnMapReadyCallback,
 //                .apply();
 //    }
 
-    /** **************************************************************************************
-     *
+    /**
+     * *************************************************************************************
+     * <p>
      * LOCATION PERMISSION METHODS
-     *
      ******************************************************************************************/
 
-    private boolean isLocationAccessPermitted(){
+    private boolean isLocationAccessPermitted() {
         /*
          * Checks if Location Access has been allowed by the user
          */
@@ -678,7 +685,7 @@ public class AddReminderFragment extends Fragment implements OnMapReadyCallback,
         return false;
     }
 
-    private void getLocationPermission(){
+    private void getLocationPermission() {
         /*
          * Request location permission, so that we can get the location of the
          * device. The result of the permission request is handled by a callback,
@@ -693,13 +700,11 @@ public class AddReminderFragment extends Fragment implements OnMapReadyCallback,
     }
 
 
-    /** **************************************************************************************
-     *
+    /**
+     * *************************************************************************************
+     * <p>
      * MISCELLANEOUS METHODS
-     *
      ******************************************************************************************/
-
-
 
 
     @Override
@@ -710,7 +715,7 @@ public class AddReminderFragment extends Fragment implements OnMapReadyCallback,
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.animateCamera(CameraUpdateFactory.zoomOut());
-        mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng ));
+        mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
 
         //stopping location updates
@@ -721,26 +726,25 @@ public class AddReminderFragment extends Fragment implements OnMapReadyCallback,
     }
 
 
-
-    private String mapAddress(LatLng latLng){
+    private String mapAddress(LatLng latLng) {
         //created geocoder object converting long and lat coordinates into address and vice versa
         Geocoder geocoder = new Geocoder(getActivity());
         String txtaddress = "";
         List<Address> addressList = null;
         Address address = null;
-        try{
+        try {
             //asks geocoder for address passed to method
             addressList = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
             //if address is available  convert to string and return
-            if(null != addressList && !addressList.isEmpty()){
+            if (null != addressList && !addressList.isEmpty()) {
                 address = addressList.get(0);
-                for(int i =0; i < address.getMaxAddressLineIndex(); i++){
-                    txtaddress += (i == 0)?address.getAddressLine(i):("\n" + address.getAddressLine(i));
+                for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
+                    txtaddress += (i == 0) ? address.getAddressLine(i) : ("\n" + address.getAddressLine(i));
 
                 }
             }
 
-        }catch(IOException e){
+        } catch (IOException e) {
 
         }
         return txtaddress;
@@ -748,7 +752,8 @@ public class AddReminderFragment extends Fragment implements OnMapReadyCallback,
 
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {}
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
@@ -779,15 +784,11 @@ public class AddReminderFragment extends Fragment implements OnMapReadyCallback,
     }
 
 
-
-
-    /**  @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    /**  @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
     inflater.inflate(R.menu.add_reminder_menu, menu);
     super.onCreateOptionsMenu(menu, inflater);
     }
-     @Override
-     public boolean onOptionsItemSelected(MenuItem item) {
+     @Override public boolean onOptionsItemSelected(MenuItem item) {
      switch (item.getItemId()) {
      case R.id.add_reminder:
      save();

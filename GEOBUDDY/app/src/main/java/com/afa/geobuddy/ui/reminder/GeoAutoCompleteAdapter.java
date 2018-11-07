@@ -1,4 +1,4 @@
-package com.example.afa.geobuddy;
+package com.afa.geobuddy.ui.reminder;
 
 import android.content.Context;
 import android.location.Address;
@@ -11,6 +11,9 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import com.afa.geobuddy.ui.reminder.GeoSearchResult;
+import com.example.afa.geobuddy.R;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,20 +23,20 @@ public class GeoAutoCompleteAdapter extends BaseAdapter implements Filterable {
     private Context mContext;
     private ArrayList mResults;
 
-    public GeoAutoCompleteAdapter(Context context){
+    public GeoAutoCompleteAdapter(Context context) {
         mResults = new ArrayList();
         this.mContext = context;
     }
 
     @Override
-    public int getCount(){
+    public int getCount() {
         if (mResults == null)
             return 0;
         return this.mResults.size();
     }
 
     @Override
-    public GeoSearchResult getItem(int index){
+    public GeoSearchResult getItem(int index) {
         return (GeoSearchResult) this.mResults.get(index);
     }
 
@@ -44,7 +47,7 @@ public class GeoAutoCompleteAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if(convertView == null){
+        if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.geo_search_result, parent, false);
         }
@@ -71,7 +74,7 @@ public class GeoAutoCompleteAdapter extends BaseAdapter implements Filterable {
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                if (results != null ) {
+                if (results != null) {
                     mResults = (ArrayList) results.values;
                     notifyDataSetChanged();
                 } else {
@@ -93,10 +96,9 @@ public class GeoAutoCompleteAdapter extends BaseAdapter implements Filterable {
             // Getting a maximum of 15 Address that matches the input text
             addresses = geocoder.getFromLocationName(query_text, MAX_RESULT_COUNT);
 
-            for(int i = 0; i<addresses.size(); i++){
-                Address address =  addresses.get(i);
-                if(address.getMaxAddressLineIndex() != -1)
-                {
+            for (int i = 0; i < addresses.size(); i++) {
+                Address address = addresses.get(i);
+                if (address.getMaxAddressLineIndex() != -1) {
                     geo_search_results.add(new GeoSearchResult(address));
                 }
             }

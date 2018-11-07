@@ -1,19 +1,18 @@
-package com.example.afa.geobuddy;
+package com.afa.geobuddy.models;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.orm.SugarRecord;
 
 
 public class Note extends SugarRecord {
 
-     String title;
-     String note;
+    private String title;
+    private String note;
 
 
     public Note() {
     }
 
-    public Note(String title,  String note) {
+    public Note(String title, String note) {
         this.title = title;
         this.note = note;
     }

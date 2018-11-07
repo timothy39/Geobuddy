@@ -1,6 +1,5 @@
-package com.example.afa.geobuddy;
+package com.afa.geobuddy.models;
 
-import android.app.PendingIntent;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -9,21 +8,19 @@ import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 import com.orm.SugarRecord;
 
-import java.sql.Blob;
-
 /**
  * Created by AFA on 14/02/2018.
  */
 
 
 public class Reminder extends SugarRecord implements Parcelable {
-     private String locationString;
-     private Double latitude;
-     private Double longitude;
-     private int notificationType;
-     private String title;
-     private String note;
-     private int radius;
+    private String locationString;
+    private Double latitude;
+    private Double longitude;
+    private int notificationType;
+    private String title;
+    private String note;
+    private int radius;
 
     private static final String KEY_TITLE = "key_title";
     private static final String KEY_LATITUDE = "key_latitude";
@@ -41,12 +38,12 @@ public class Reminder extends SugarRecord implements Parcelable {
 
 
     public Reminder(String title, LatLng location, int radius, int notificationType, String note) {
-        this.title=title;
-        this.latitude =  location.latitude;
+        this.title = title;
+        this.latitude = location.latitude;
         this.longitude = location.longitude;
         this.radius = radius;
         this.notificationType = notificationType;
-        this.note =note;
+        this.note = note;
     }
 
     public String getTitle() {
@@ -77,6 +74,7 @@ public class Reminder extends SugarRecord implements Parcelable {
     public int getNotificationType() {
         return notificationType;
     }
+
     public String getNote() {
         return note;
     }
@@ -98,10 +96,11 @@ public class Reminder extends SugarRecord implements Parcelable {
     }
 
 
+    /**
+     * Parcelable methods
+     */
 
-    /** Parcelable methods */
-
-    public Reminder(Parcel in){
+    public Reminder(Parcel in) {
         Bundle data;
 
         data = in.readBundle(getClass().getClassLoader());
@@ -114,6 +113,7 @@ public class Reminder extends SugarRecord implements Parcelable {
         this.latitude = data.getDouble(KEY_LATITUDE);
         this.longitude = data.getDouble(KEY_LONGITUDE);
     }
+
     @Override
     public int describeContents() {
         return 0;

@@ -1,7 +1,6 @@
-package com.example.afa.geobuddy;
+package com.afa.geobuddy.ui.reminder;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -14,25 +13,24 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
+import com.afa.geobuddy.misc.Constants;
+import com.afa.geobuddy.models.Reminder;
+import com.example.afa.geobuddy.R;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.example.afa.geobuddy.Constants;
 
 
 public class ReminderFragment extends Fragment {
     List<Reminder> reminders = new ArrayList<>();
     private RecyclerView rem_recyclerView;
-    private ReminderDbAdapter reminderDbAdapter;
+    private ReminderDataBinder reminderDataBinder;
     private RecyclerView.LayoutManager remLayoutmanager;
     long remlist;
     long newcount;
-    int modifyposition= -1;
+    int modifyposition = -1;
     CoordinatorLayout coordinatorLayout;
-
-
 
 
     @Override
@@ -44,34 +42,35 @@ public class ReminderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View reminderview =  inflater.inflate(R.layout.fragment_reminder, container, false);
+        final View reminderview = inflater.inflate(R.layout.fragment_reminder, container, false);
         Toolbar toolbar = (Toolbar) reminderview.findViewById(R.id.toolbar);
         FloatingActionButton floatingActionButton = (FloatingActionButton) reminderview.findViewById(R.id.reminderfloatingbutton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), AddReminder.class));
+                startActivity(new Intent(getActivity(), AddReminderActivity.class));
             }
         });
-        coordinatorLayout=(CoordinatorLayout)reminderview.findViewById(R.id.remcoordinator);
+        coordinatorLayout = (CoordinatorLayout) reminderview.findViewById(R.id.remcoordinator);
         rem_recyclerView = (RecyclerView) reminderview.findViewById(R.id.note_rv);
         rem_recyclerView.setHasFixedSize(true);
 
 
         //linear layout manager
-       remLayoutmanager = new LinearLayoutManager(getActivity());
-       rem_recyclerView.setLayoutManager(remLayoutmanager);
+        remLayoutmanager = new LinearLayoutManager(getActivity());
+        rem_recyclerView.setLayoutManager(remLayoutmanager);
 
 
         remlist = Reminder.count(Reminder.class);
 
         if (remlist >= 0) {
             reminders = Reminder.listAll(Reminder.class);
-            reminderDbAdapter = new ReminderDbAdapter(getActivity(), reminders);
-        }else{
-            reminderDbAdapter = new ReminderDbAdapter(getActivity());
+            reminderDataBinder = new ReminderDataBinder(getActivity(), reminders);
+        } else {
+            reminderDataBinder = new ReminderDataBinder(getActivity());
 
-        }  rem_recyclerView.setAdapter(reminderDbAdapter);
+        }
+        rem_recyclerView.setAdapter(reminderDataBinder);
         ItemTouchHelper.SimpleCallback recyclercallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
@@ -84,29 +83,28 @@ public class ReminderFragment extends Fragment {
                 final int position = viewHolder.getAdapterPosition();
                 final Reminder reminder = reminders.get(viewHolder.getAdapterPosition());
                 reminders.remove(viewHolder.getAdapterPosition());
-                reminderDbAdapter.notifyItemRemoved(position);
-
+                reminderDataBinder.notifyItemRemoved(position);
 
 
                 reminder.delete();
                 remlist -= 1;
 
-                Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content ), "Note has been deleted", Snackbar.LENGTH_SHORT)
+                Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), "Note has been deleted", Snackbar.LENGTH_SHORT)
                         .setAction("UNDO", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Snackbar snackbar1 = Snackbar.make(getActivity().findViewById(android.R.id.content ), "Note has been restored", Snackbar.LENGTH_SHORT);
+                                Snackbar snackbar1 = Snackbar.make(getActivity().findViewById(android.R.id.content), "Note has been restored", Snackbar.LENGTH_SHORT);
                                 reminder.save();
                                 reminders.add(position, reminder);
-                                reminderDbAdapter.notifyItemInserted(position);
+                                reminderDataBinder.notifyItemInserted(position);
                                 remlist += 1;
                                 snackbar1.show();
 
                             }
 
 
-
-                        });snackbar.show();
+                        });
+                snackbar.show();
 
 
             }
@@ -116,12 +114,11 @@ public class ReminderFragment extends Fragment {
         itemTouchHelper.attachToRecyclerView(rem_recyclerView);
 
 
-
-        reminderDbAdapter.SetOnItemClickListener(new ReminderDbAdapter.OnItemClickListener(){
+        reminderDataBinder.SetOnItemClickListener(new ReminderDataBinder.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 // Intent to send data from fragment to AddReminder Activity
-                Intent intent = new Intent(getActivity(), AddReminder.class);
+                Intent intent = new Intent(getActivity(), AddReminderActivity.class);
                 intent.putExtra(Constants.KEY_ACTION_EDIT, true);
                 intent.putExtra(Constants.KEY_REMINDER_OBJ, reminders.get(position));
 
@@ -129,19 +126,20 @@ public class ReminderFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        
+
 
         return reminderview;
     }
+
     @Override
     public void onResume() {
         super.onResume();
 
-         newcount = Reminder.count(Reminder.class);
+        newcount = Reminder.count(Reminder.class);
         if (newcount > remlist) {
-           Reminder reminder = Reminder.last(Reminder.class);
+            Reminder reminder = Reminder.last(Reminder.class);
             reminders.add(reminder);
-            reminderDbAdapter.notifyItemInserted((int) newcount);
+            reminderDataBinder.notifyItemInserted((int) newcount);
             rem_recyclerView.smoothScrollToPosition(0);
 
             remlist = newcount;
@@ -150,11 +148,9 @@ public class ReminderFragment extends Fragment {
         }
         if (modifyposition != -1) {
             reminders.set(modifyposition, Reminder.listAll(Reminder.class).get(modifyposition));
-            reminderDbAdapter.notifyItemChanged(modifyposition);
+            reminderDataBinder.notifyItemChanged(modifyposition);
         }
     }
-
-
 
 
 }

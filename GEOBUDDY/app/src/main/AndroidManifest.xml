@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.afa.geobuddy">
+    package="com.afa.geobuddy">
 
     <!-- Internet Permissions -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -26,13 +26,21 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
         <!-- Sugar ORM meta-data -->
-        <meta-data android:name="DATABASE" android:value="example.db" />
-        <meta-data android:name="VERSION" android:value="5" />
-        <meta-data android:name="QUERY_LOG" android:value="true" />
-        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="com.example" />
+        <meta-data
+            android:name="DATABASE"
+            android:value="example.db" />
+        <meta-data
+            android:name="VERSION"
+            android:value="5" />
+        <meta-data
+            android:name="QUERY_LOG"
+            android:value="true" />
+        <meta-data
+            android:name="DOMAIN_PACKAGE_NAME"
+            android:value="com.example" />
 
         <activity
-            android:name=".SplashActivity"
+            android:name=".ui.SplashActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,7 +49,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:label="LOCATION REMINDER"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
@@ -52,10 +60,12 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCIBNUSVQeZ4W_2B-aTF2ZcagDdQwQ-hNM" />
 
-        <activity android:name=".AddReminder" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity android:name=".AddNote"></activity>
-        
-      <service android:name=".LocationAlertIntentService"/>
+        <activity
+            android:name=".ui.reminder.AddReminderActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".ui.notes.AddNoteActivity"></activity>
+
+        <service android:name=".services.LocationAlertIntentService" />
     </application>
 
 </manifest>

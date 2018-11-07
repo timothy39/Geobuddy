@@ -1,7 +1,6 @@
-package com.example.afa.geobuddy;
+package com.afa.geobuddy.ui.reminder;
 
 import android.location.Address;
-import android.util.Log;
 
 /**
  * Created by afa on 15/2/2018.
@@ -11,19 +10,17 @@ public class GeoSearchResult {
     private static final String TAG = GeoSearchResult.class.getSimpleName();
     private Address address;
 
-    public GeoSearchResult(Address address)
-    {
+    public GeoSearchResult(Address address) {
         this.address = address;
     }
 
-    public String getAddress(){
+    public String getAddress() {
 
         String display_address = "";
 
         display_address += address.getAddressLine(0) + "\n";
 
-        for(int i = 1; i < address.getMaxAddressLineIndex(); i++)
-        {
+        for (int i = 1; i < address.getMaxAddressLineIndex(); i++) {
             display_address += address.getAddressLine(i) + ", ";
         }
 
@@ -33,20 +30,18 @@ public class GeoSearchResult {
         return display_address;
     }
 
-    public Address fullAddress(){
+    public Address fullAddress() {
         return this.address;
     }
 
-    public String toString(){
+    public String toString() {
         String display_address = "";
 
-        if(address.getFeatureName() != null)
-        {
+        if (address.getFeatureName() != null) {
             display_address += address + ", ";
         }
 
-        for(int i = 0; i < address.getMaxAddressLineIndex(); i++)
-        {
+        for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
             display_address += address.getAddressLine(i);
         }
 

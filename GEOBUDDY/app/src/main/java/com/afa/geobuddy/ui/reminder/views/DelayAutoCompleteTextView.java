@@ -1,19 +1,13 @@
-package com.example.afa.geobuddy;
+package com.afa.geobuddy.ui.reminder.views;
 
 
-import android.app.Notification;
 import android.content.Context;
-
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.util.AttributeSet;
 import android.view.View;
-
-import android.widget.AutoCompleteTextView;
-import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.widget.ProgressBar;
-
-
 
 
 public class DelayAutoCompleteTextView extends AppCompatAutoCompleteTextView {

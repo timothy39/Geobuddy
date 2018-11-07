@@ -6,6 +6,6 @@
     android:layout_height="match_parent"
 
     android:background="@drawable/finalsplash2"
-    tools:context="com.example.afa.geobuddy.SplashActivity">
+    tools:context="com.afa.geobuddy.ui.SplashActivity">
 
 </LinearLayout>

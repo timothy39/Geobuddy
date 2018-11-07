@@ -1,8 +1,7 @@
-package com.example.afa.geobuddy;
+package com.afa.geobuddy.ui.search;
 
 
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
@@ -19,12 +18,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.afa.geobuddy.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-
-import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
@@ -35,13 +33,12 @@ import java.io.IOException;
 import java.util.List;
 
 
-
 public class SearchFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap myMap;
     private LatLng latLng;
     private MarkerOptions markerOptions;
     private EditText txtSearch;
-    private Button btnnSearch;
+    private Button btnSearch;
     private List<Address> addresses = null;
     private Address address;
     private Circle circle;
@@ -55,17 +52,16 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment)
-        View searchview = inflater.inflate(R.layout.fragment_search, container, false);
-        txtSearch = (EditText) searchview.findViewById(R.id.txtSearchAddress);
-        btnnSearch = (Button) searchview.findViewById(R.id.btnSearch);
-        btnnSearch.setOnClickListener(new View.OnClickListener() {
+        View searchView = inflater.inflate(R.layout.fragment_search, container, false);
+        txtSearch = (EditText) searchView.findViewById(R.id.txtSearchAddress);
+        btnSearch = (Button) searchView.findViewById(R.id.btnSearch);
+        btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new GeocoderTask().execute(txtSearch.getText().toString());
@@ -83,7 +79,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback {
 
         searchmapfragment.getMapAsync(this);
 
-        return searchview;
+        return searchView;
     }
 
 
@@ -91,39 +87,8 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         myMap = googleMap;
         myMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(51.4047, 0.5418),5.0f));
-
-
-
+        myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(51.4047, 0.5418), 5.0f));
         //provide focus and zoom control
-
-
-    }
-
-
-
-
-
-    private class GeocoderTask extends AsyncTask<String, Void, List<Address>> {
-
-        @Override
-        protected List<Address> doInBackground(String... locationName) {
-            Geocoder geocoder = new Geocoder(getActivity());
-
-            try {
-                addresses = geocoder.getFromLocationName(locationName[0], 5);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return addresses;
-        }
-
-
-        @Override
-        protected void onPostExecute(List<Address> addresses) {
-            executeSearch(addresses);
-
-        }
     }
 
     protected void executeSearch(List<Address> addresses) {
@@ -134,7 +99,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback {
 
         //adding markers for addresses
         for (int i = 0; i < addresses.size(); i++) {
-             address = (Address) addresses.get(i);
+            address = (Address) addresses.get(i);
 
 
             //creating instance of geopoint
@@ -155,14 +120,34 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback {
             circle = myMap.addCircle(new CircleOptions().center(latLng).radius(100).strokeColor(Color.BLUE));
 
 
-
-
             //locate first location
-           if (i == 0) {
+            if (i == 0) {
                 myMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
                 myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
 
             }
+        }
+    }
+
+    private class GeocoderTask extends AsyncTask<String, Void, List<Address>> {
+
+        @Override
+        protected List<Address> doInBackground(String... locationName) {
+            Geocoder geocoder = new Geocoder(getActivity());
+
+            try {
+                addresses = geocoder.getFromLocationName(locationName[0], 5);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return addresses;
+        }
+
+
+        @Override
+        protected void onPostExecute(List<Address> addresses) {
+            executeSearch(addresses);
+
         }
     }
 }

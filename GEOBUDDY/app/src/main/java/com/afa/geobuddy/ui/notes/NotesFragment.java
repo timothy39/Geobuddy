@@ -1,4 +1,4 @@
-package com.example.afa.geobuddy;
+package com.afa.geobuddy.ui.notes;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.afa.geobuddy.models.Note;
+import com.example.afa.geobuddy.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +25,7 @@ public class NotesFragment extends Fragment {
 
     long notecount;
     int modifyposition = -1;
-    NotesDbAdapter notesDbAdapter;
+    NotesDataBinder notesDbAdapter;
     RecyclerView recyclerView;
 
     List<Note> notes = new ArrayList<>();
@@ -50,7 +53,7 @@ public class NotesFragment extends Fragment {
 
 
         //linear layout manager
-        linearLayoutManager= new LinearLayoutManager(getActivity());
+        linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
 
@@ -61,9 +64,8 @@ public class NotesFragment extends Fragment {
         if (notecount >= 0) {
             notes = Note.listAll(Note.class);
 
-            notesDbAdapter = new NotesDbAdapter(getActivity(), notes);
+            notesDbAdapter = new NotesDataBinder(getActivity(), notes);
             recyclerView.setAdapter(notesDbAdapter);
-
 
 
         }
@@ -104,13 +106,13 @@ public class NotesFragment extends Fragment {
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
 
-        notesDbAdapter.SetOnItemClickListener(new NotesDbAdapter.OnItemClickListener() {
+        notesDbAdapter.SetOnItemClickListener(new NotesDataBinder.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent = new Intent(getActivity(), AddNote.class);
+                Intent intent = new Intent(getActivity(), AddNoteActivity.class);
                 intent.putExtra("edit this note", true);
-                intent.putExtra("title", notes.get(position).title);
-                intent.putExtra("note", notes.get(position).note);
+                intent.putExtra("title", notes.get(position).getTitle());
+                intent.putExtra("note", notes.get(position).getNote());
 
                 modifyposition = position;
                 startActivity(intent);
@@ -121,7 +123,7 @@ public class NotesFragment extends Fragment {
         note_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), AddNote.class));
+                startActivity(new Intent(getActivity(), AddNoteActivity.class));
             }
         });
 

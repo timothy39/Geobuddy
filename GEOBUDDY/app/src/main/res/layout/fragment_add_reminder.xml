@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@color/colorPrimaryDark"
     android:gravity="bottom"
-    tools:context="com.example.afa.geobuddy.AddReminder">
+    tools:context="com.afa.geobuddy.ui.reminder.AddReminderActivity">
 
 
     <LinearLayout

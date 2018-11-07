@@ -5,7 +5,7 @@
     android:background="@color/cyan_light"
     android:fitsSystemWindows="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.example.afa.geobuddy.NotesFragment">
+    tools:context="com.afa.geobuddy.ui.notes.NotesFragment">
 
 
      <android.support.v7.widget.Toolbar
@@ -18,7 +18,7 @@
          <ImageView
              android:layout_width="50dp"
              android:layout_height="50dp"
-             android:src="@drawable/logo"/>
+             app:srcCompat="@drawable/logo"/>
 
          <TextView
              android:layout_width="wrap_content"
